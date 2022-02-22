@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1>Create a play. This is templates/display/create_play.html</h1>
+<div class="create-team-form-wrapper">
+    <form method="post">
+        <label for="team_abbr">team_abbr</label>
+        <input name="team_abbr" id="team_abbr" value="{{ request.form['team_abbr'] }}" required>
+        <label for="quarter">quarter</label>
+        <input name="quarter" id="quarter" value="{{ request.form['quarter'] }}">
+        <label for="gameClock">gameClock</label>
+        <input name="gameClock" id="gameClock" value="{{ request.form['gameClock'] }}" required>
+        <label for="down">down</label>
+        <input name="down" id="down" value="{{ request.form['down'] }}">
+        <label for="distance">distance</label>
+        <input name="distance" id="distance" value="{{ request.form['distance'] }}" required>
+        <label for="yardLine">yardLine</label>
+        <input name="yardLine" id="yardLine" value="{{ request.form['yardLine'] }}">
+        <label for="descript">descript</label>
+        <input name="descript" id="descript" value="{{ request.form['descript'] }}" required>
+        <label for="tackler">tackler</label>
+        <input name="tackler" id="tackler" value="{{ request.form['tackler'] }}">
+        <label for="scoreType">scoreType</label>
+        <input name="scoreType" id="scoreType" value="{{ request.form['scoreType'] }}">
+        <label for="scoreHome">scoreHome</label>
+        <input type="number" name="scoreHome" id="scoreHome" value="{{ request.form['scoreHome'] }}">
+        <label for="scoreAway">scoreAway</label>
+        <input type="number" name="scoreAway" id="scoreAway" value="{{ request.form['scoreAway'] }}">
+        <input type="submit" value="Save">
+    </form>
+</div>
+{% endblock %}

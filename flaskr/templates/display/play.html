@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>All plays Displayed in a Table. This is templates/display/play.html</h1>
+<div class='team-table-wrapper'>
+    <table>
+        <thead>
+            <tr>
+                <th>isScore</th>
+                <th>hasTackle</th>
+                <th>team_abbr</th>
+                <th>quarter</th>
+                <th>gameClock</th>
+                <th>down</th>
+                <th>distance</th>
+                <th>yardLine</th>
+                <th>descript</th>
+                <th>scoreHome</th>
+                <th>scoreAway</th>
+                <th>created</th>
+                <th>gameOver</th>
+                <th>ID</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for play in plays %}
+            <tr>
+                <td>{{ play.isScore }}</td>
+                <td>{{ play.hasTackle }}</td>
+                <td>{{ play.team_abbr }}</td>
+                <td>{{ play.quarter }}</td>
+                <td>{{ play.gameClock }}</td>
+                <td>{{ play.down }}</td>
+                <td>{{ play.distance }}</td>
+                <td>{{ play.yardLine }}</td>
+                <td>{{ play.descript }}</td>
+                <td>{{ play.scoreHome }}</td>
+                <td>{{ play.scoreAway }}</td>
+                <td>{{ play.created }}</td>
+                <td>{{ play.gameOver }}</td>
+                <td>{{ play.id }}</td>
+                <td><a href="{{ url_for('display.update_play', id=play['id']) }}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% for team in teams %}
+<div>{{ team.abbreviation }}</div>
+{% endfor %}
+<br>
+<br>
+<br>
+<a class="action" href="{{ url_for('display.create_play') }}">New play</a>
+{% endblock %}

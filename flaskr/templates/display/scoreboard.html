@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='build/style/scoreboard.css') }}">
+    <title>Scoreboard</title>
+</head>
+
+<body>
+    <div class='box-score-wrapper'>
+        <div class='team-row'>
+            {% for team in teams %}
+            <div class='team-cell'>
+                <div class='team-cell-logo'>
+                    <img src="{{ url_for('static', filename='build/image/' + team.nickname + '.png') }}">
+                </div>
+                <div class='team-cell-name'>
+                    <p>
+                        {{team.abbreviation}}
+                    </p>
+                </div>
+                <div class='team-cell-score'>
+                    {% if team.id == 1 %}
+                    <p id="scoreHome">
+                    </p>
+                    {% else %}
+                    <p id="scoreAway">
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class='info-row'>
+            <div class='info-down-cell {{ play.team_abbr}}'>
+                <p id="down-distance-text">
+                </p>
+            </div>
+            <div class='info-time-cell'>
+                <p id="quarter-clock-text">
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class='play-display-wrapper'>
+        <div class='ball-location-display {{ play.team_abbr }}'>
+            <p>
+                Ball On
+            </p>
+            <p id="yard-line-text">
+            </p>
+        </div>
+        <div class='play-description'>
+            <p id="description-text">
+
+            </p>
+        </div>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        // this is the function that is called on page load, after basic elements from the page are loaded
+        $(function () {
+            // this is the intial call of startUp, because timeout delays happen before the function, there is none
+            // for the page load
+            startUp();
+        });
+        // This function handles the startup of the page, and helps to divide functions for timeout purposes
+        // It is a recursive loop function, using setTimeout to handle delays
+        function startUp() {
+            // 1) we call flask's send_data function. This scrapes the webpage for the most recent play, and if it's new
+            // updates the database with the new play
+            $.getJSON('/_send_data',
+                function (data) {
+                    // call upDateData to send data to the webpage to be seen
+                    updateData(data);
+                    // here we use setTimeout before recursively calling startUp again
+                    // 10000 is a 10 second delay before the process is repeated
+                    setTimeout(function () {
+                        startUp();
+                    }, 10000);
+                }
+            );
+        }
+        // This is the function that handles the incoming data from flasks send_data function
+        function updateData(data) {
+            // first it checks if data is false. If so, it returns without doing anything.
+            // This is an indication that no new play was created, and thus no new updating is necessary
+            if (!data) {
+                return;
+            }
+            // In any other case, all the proper strings are sent to their DOM locations to update correctly
+            $('p#scoreHome').text(data['scoreHome']);
+            $('p#scoreAway').text(data['scoreAway']);
+            $('p#down-distance-text').text(data['down'] + ' & ' + data['distance']);
+            $('p#quarter-clock-text').text(data['quarter'] + ' ' + data['gameClock']);
+            $('p#yard-line-text').text(data['yardLine']);
+            var textHolder = "";
+            var nameHolder = "";
+            if (data['isScore']) {
+                if (data['playTeamAbbr'] == data['awayTeamAbbr']) {
+                    nameHolder = data['awayTeamName'];
+                }
+                else if (data['playTeamAbbr'] == data['homeTeamAbbr']) {
+                    nameHolder = data['homeTeamName'];
+                }
+                if (data['scoreType'] == 'Passing TD') {
+                    textHolder += ('Touchdown ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'Rushing TD') {
+                    textHolder += ('Touchdown ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'INT Return TD') {
+                    textHolder += ('Pick 6 ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'Fumble Return TD') {
+                    textHolder += ('Touchdown ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'Punt Return TD') {
+                    textHolder += ('He took it to the House! Touchdown ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'Kick Return TD') {
+                    textHolder += ('HE. COULD. GO. ALL. THE. WAY. Touchdown ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'Blocked Punt Return TD') {
+                    textHolder += ('Touchdown ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'Blocked FG Return TD') {
+                    textHolder += ('Touchdown ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'Missed FG Return TD') {
+                    textHolder += ('Kick Six ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'Field Goal Made') {
+                    textHolder += ("It's Good! Three points for the " + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'XP') {
+                    textHolder += ("It's Good! One point for the " + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == '2 Pt Conversion Passing') {
+                    textHolder += ('2 Points for the ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == '2 Pt Conversion Rushing') {
+                    textHolder += ('2 Points for the ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'Conversion Return') {
+                    textHolder += ('2 Point Touchdown for the ' + nameHolder + '! ');
+                }
+                else if (data['scoreType'] == 'Safety') {
+                    textHolder += ('Safety for the ' + nameHolder + '! ');
+                }
+                else {
+                    textHolder += (nameHolder + ' score! ');
+                }
+            }
+            textHolder += data['descript'];
+            if (data['hasTackle']) {
+                textHolder += (' - tackled by ' + data['tackler']);
+            }
+            $('p#description-text').text(textHolder);
+        }
+    </script>
+
+</body>
+
+
+</html>

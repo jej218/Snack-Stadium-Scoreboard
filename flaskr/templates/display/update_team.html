@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1>Edit a Team. This is templates/display/update_team.html</h1>
+<div class="create-team-form-wrapper">
+    <form method="post">
+        <label for="nickname">nickname</label>
+        <input name="nickname" id="nickname" value="{{ request.form['nickname'] or team['nickname'] }}" required>
+        <label for="abbreviation">abbreviation</label>
+        <input name="abbreviation" id="abbreviation" value="{{ request.form['abbreviation'] or team['abbreviation'] }}"
+            required>
+        <input type="submit" value="Save">
+    </form>
+</div>
+<form action="{{ url_for('display.delete_team', id=team['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+</form>
+{% endblock %}

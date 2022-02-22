@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>All Teams Displayed in a Table. This is templates/display/team.html</h1>
+<div class='team-table-wrapper'>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nickname</th>
+                <th>Abbr</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+            <tr>
+                <td>{{ team.id }}</td>
+                <td>{{ team.nickname }}</td>
+                <td>{{ team.abbreviation }}</td>
+                <td><a href="{{ url_for('display.update_team', id=team['id']) }}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<br>
+<br>
+<br>
+<a class="action" href="{{ url_for('display.create_team') }}">New Team</a>
+{% endblock %}

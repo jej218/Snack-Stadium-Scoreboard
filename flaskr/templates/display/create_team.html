@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1>Create a Team. This is templates/display/create_team.html</h1>
+<div class="create-team-form-wrapper">
+    <form method="post">
+        <label for="nickname">nickname</label>
+        <input name="nickname" id="nickname" value="{{ request.form['nickname'] }}" required>
+        <label for="abbreviation">abbreviation</label>
+        <input name="abbreviation" id="abbreviation" value="{{ request.form['abbreviation'] }}" required>
+        <input type="submit" value="Save">
+    </form>
+</div>
+{% endblock %}

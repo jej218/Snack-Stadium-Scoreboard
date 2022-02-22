@@ -1,0 +1,173 @@
+$box-score-width: 800px
+$box-score-height: calc($box-score-width / 2.5)
+$box-score-left: calc((800px - $box-score-width) / 2)
+$box-score-top: $box-score-left * 0.6
+$team-row-height: calc($box-score-height / 2)
+$team-cell-width: calc($box-score-width / 2)
+$team-cell-logo-width: $team-cell-width * 0.375
+$team-cell-score-width: $team-cell-width * 0.25
+$play-display-height: 480px - $box-score-height
+$ball-location-width: calc($team-cell-width / 2)
+$play-description-width: 800px - $ball-location-width
+
+$away-team: #003594
+$home-team: #FB4F14
+$time-cell: rgb(15,15,15)
+
+@font-family
+    font-family: 'Gotham', sans-serif
+    src: url('http://fonts.cdnfonts.com/css/gotham.otf') format('opentype')
+
+$scoreboard-font: 'Gotham', sans-serif
+$team-name-size-abs: $team-row-height * 0.4
+$team-score-size-abs: $team-row-height * 0.45
+$ball-location-font-size: $play-display-height * 0.3
+
+%box-score-text
+    color: white
+    font-family: $scoreboard-font
+    font-weight: 600
+    text-align: center
+    line-height: 0.8
+    margin: auto
+
+%logo-sizing
+    max-height: $team-row-height
+    max-width: $team-cell-logo-width
+
+p
+    margin-block-start: 0
+    margin-block-end: 0
+    @extend %box-score-text
+
+body
+    max-width: 800px
+    max-height: 480px
+    margin: 0
+
+    div.box-score-wrapper
+        width: $box-score-width
+        height: $box-score-height
+        margin-left: $box-score-left
+        margin-top: $box-score-top
+        display: grid
+        grid-template-rows: $team-row-height $team-row-height
+        grid-template-areas: "team-row" "info-row"
+
+        div.team-row
+            height: $team-row-height
+            grid-area: team-row
+            display: grid
+            grid-template-columns: $team-cell-width $team-cell-width
+
+            div.team-cell
+                width: $team-cell-width
+                display: grid
+                grid-template-columns: $team-cell-logo-width $team-cell-logo-width $team-cell-score-width
+                grid-template-areas: 'team-cell-logo team-cell-name team-cell-score'
+
+                &:first-child
+                    background-color: $away-team
+                    div.team-cell-logo
+                        img
+                            @extend %logo-sizing
+
+                &:last-child
+                    background-color: $home-team
+                    div.team-cell-logo
+                        img
+                            @extend %logo-sizing
+
+                div.team-cell-logo
+                    width: $team-cell-logo-width
+
+                div.team-cell-name
+                    width: $team-cell-logo-width
+                    display: flex
+                    p
+                        @extend %box-score-text
+                        font-size: $team-name-size-abs * 1.25
+
+                div.team-cell-score
+                    width: $team-cell-score-width
+                    background-color: rgba(0,0,0,0.15)
+                    display: flex
+                    p
+                        @extend %box-score-text
+                        font-size: $team-score-size-abs * 1.25
+
+        div.info-row
+            grid-area: info-row
+            height: $team-row-height
+            display: flex
+
+            div.info-time-cell
+                background-color: $time-cell
+                width: $team-cell-width
+                height: $team-row-height
+                display: flex
+                order: 2
+                p
+                    @extend %box-score-text
+                    font-size: $team-name-size-abs * 1.25
+                    font-variant: small-caps
+
+            div.info-down-cell
+                width: $team-cell-width
+                height: $team-row-height
+                display: flex
+                p
+                    @extend %box-score-text
+                    font-size: $team-score-size-abs * 1.25
+                    font-variant: small-caps
+
+            div.LAR
+                order: 1
+                background-color: $away-team
+
+            div.CIN
+                order: 3
+                background-color: $home-team
+
+            div.home-ball
+                background-color: $home-team
+
+            div.away-ball
+                background-color: $away-team
+
+    div.play-display-wrapper
+        background-color: darkgreen //FIXME:
+        height: $play-display-height
+        display: flex
+
+        div.LAR
+            background-color: $away-team
+            order: 1
+
+        div.CIN
+            background-color: $home-team
+            order: 3
+
+        div.ball-location-display
+            width: $ball-location-width
+            display: flex
+            flex-direction: column
+
+            p
+                @extend %box-score-text
+                font-size: $ball-location-font-size
+
+        div.play-description
+            order: 2
+            width: $play-description-width
+            background-color: $time-cell
+            display: flex
+
+            p
+                font-size: $ball-location-font-size * 0.8
+                margin: auto
+                font-variant: small-caps
+                line-height: 1
+
+    div.play-wrapper-interim
+        display: none
