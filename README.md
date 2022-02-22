@@ -1,7 +1,7 @@
 # Snack Stadium Scoreboard
 This was a side project I worked on during my webdev bootcamp. The goal was to get a live 'scoreboard' self-updating throughout an NFL game on a Raspberry Pi, mounted on a "snack stadium" as its jumbotron.
 
-It is setup as a Python web application using the [Flask Framework](https://flask.palletsprojects.com/en/2.0.x/), and uses [AJAX](https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX) with JSON to send the data without reloading the page. I scraped [Fleaflicker](https://www.fleaflicker.com/nfl/pbp?gameId=6715) using [HTMLParser](https://docs.python.org/3/library/html.parser.html) to grab live score and play by play updates. I taught myself Flask and [Sass](https://sass-lang.com/) for this project.
+It is setup as a Python web application using the [Flask Framework](https://flask.palletsprojects.com/en/2.0.x/), and uses [AJAX](https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX) with JSON to send the data without reloading the page. I scraped [Fleaflicker](https://www.fleaflicker.com/nfl/pbp?gameId=6715) using [HTMLParser](https://docs.python.org/3/library/html.parser.html) to grab live score and play by play updates. I taught myself Flask and [Sass](https://sass-lang.com/) for this project. The code is well commented, if you would like to simply take a look at my work.
 
 **This project is currently in pre-alpha and will not be deployed until after my bootcamp.** However, you _can_ run it in the flask's development environment, within a python virtual environment with flask installed.
 
